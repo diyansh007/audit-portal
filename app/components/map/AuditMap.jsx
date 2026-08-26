@@ -31,14 +31,14 @@ export default function AuditMap({ locations, selectedSlug, onLocationClick }) {
         );
 
         const map = L.map(mapRef.current, {
-          center: [19.7515, 75.7139], // Center of Maharashtra
-          zoom: 7,
+          center: [21.1458, 79.0882], // Nagpur at center
+          zoom: 8,
           minZoom: 6,
           maxZoom: 14,
           zoomControl: false,
           attributionControl: true,
           maxBounds: MAHARASHTRA_BOUNDS,
-          maxBoundsViscosity: 0.95, // Sticky — hard to drag outside
+          maxBoundsViscosity: 0.95,
         });
 
         // CartoDB Positron — clean, neutral tiles
@@ -50,8 +50,8 @@ export default function AuditMap({ locations, selectedSlug, onLocationClick }) {
         // Zoom control — bottom right
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        // Fit Maharashtra on first load
-        map.fitBounds(MAHARASHTRA_BOUNDS, { padding: [20, 20] });
+        // Start centered on Nagpur at zoom 8
+        map.setView([21.1458, 79.0882], 8);
 
         mapInstanceRef.current = map;
       }
@@ -112,9 +112,8 @@ export default function AuditMap({ locations, selectedSlug, onLocationClick }) {
           map.flyTo([loc.lat, loc.lng], 10, { animate: true, duration: 1.2 });
         }
       } else if (!selectedSlug) {
-        // Fly back to show all Maharashtra
-        const MAHARASHTRA_BOUNDS = L.latLngBounds([15.6, 72.6], [22.2, 80.9]);
-        map.flyToBounds(MAHARASHTRA_BOUNDS, { padding: [20, 20], animate: true, duration: 0.8 });
+        // Fly back to Nagpur center
+        map.flyTo([21.1458, 79.0882], 8, { animate: true, duration: 0.8 });
       }
     });
   }, [locations, selectedSlug, onLocationClick]);
