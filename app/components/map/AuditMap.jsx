@@ -24,11 +24,21 @@ export default function AuditMap({ locations, selectedSlug, onLocationClick }) {
 
       if (!mapInstanceRef.current && mapRef.current) {
         // Initialize map centered on Nagpur region
+        // Maharashtra bounds: SW [15.6, 72.6] → NE [22.2, 80.9]
+        const MAHARASHTRA_BOUNDS = L.latLngBounds(
+          [15.6, 72.6],
+          [22.2, 80.9]
+        );
+
         const map = L.map(mapRef.current, {
-          center: [20.9, 78.8],
-          zoom: 8,
+          center: [19.7515, 75.7139], // Center of Maharashtra
+          zoom: 7,
+          minZoom: 6,
+          maxZoom: 14,
           zoomControl: false,
           attributionControl: true,
+          maxBounds: MAHARASHTRA_BOUNDS,
+          maxBoundsViscosity: 0.95, // Sticky — hard to drag outside
         });
 
         // CartoDB Positron — clean, neutral tiles
@@ -37,8 +47,11 @@ export default function AuditMap({ locations, selectedSlug, onLocationClick }) {
           maxZoom: 18,
         }).addTo(map);
 
-        // Custom zoom control position
+        // Zoom control — bottom right
         L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+        // Fit Maharashtra on first load
+        map.fitBounds(MAHARASHTRA_BOUNDS, { padding: [20, 20] });
 
         mapInstanceRef.current = map;
       }
@@ -96,10 +109,12 @@ export default function AuditMap({ locations, selectedSlug, onLocationClick }) {
       if (selectedSlug && markersRef.current[selectedSlug]) {
         const loc = locations.find((l) => l.slug === selectedSlug);
         if (loc) {
-          map.flyTo([loc.lat, loc.lng], 11, { animate: true, duration: 1.2 });
+          map.flyTo([loc.lat, loc.lng], 10, { animate: true, duration: 1.2 });
         }
       } else if (!selectedSlug) {
-        map.flyTo([20.9, 78.8], 8, { animate: true, duration: 0.8 });
+        // Fly back to show all Maharashtra
+        const MAHARASHTRA_BOUNDS = L.latLngBounds([15.6, 72.6], [22.2, 80.9]);
+        map.flyToBounds(MAHARASHTRA_BOUNDS, { padding: [20, 20], animate: true, duration: 0.8 });
       }
     });
   }, [locations, selectedSlug, onLocationClick]);

@@ -1,6 +1,18 @@
 // =============================================================================
-// In-memory data store with JSON file persistence
-// Production: replace with PostgreSQL/Prisma
+// Data Store Abstraction
+//
+// Dev  → JSON file store  (data/store.json — persists across restarts)
+// Prod → Cloudflare D1    (SQLite at the edge, zero cold-start)
+//        or Cloudflare KV  (for simple key-value access patterns)
+//
+// Cloudflare D1 setup (when ready for production):
+//   1. wrangler d1 create audit-portal-db
+//   2. Add binding to wrangler.toml:  [[d1_databases]]  binding = "DB"
+//   3. Replace the functions below with:  env.DB.prepare(...).run()
+//   4. Use @cloudflare/next-on-pages to build for Cloudflare Pages
+//
+// Nothing in the API routes or components needs to change —
+// only this file needs to be updated for production.
 // =============================================================================
 
 import fs from 'fs';
