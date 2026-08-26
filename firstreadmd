@@ -1,0 +1,22 @@
+#ai doc 
+pen the browser and navigate to http://localhost:3000. 
+
+Test the following complete workflow and report exactly what you see at each step, including any errors:
+
+1. Navigate to http://localhost:3000 — describe what you see (map, markers, nav bar, etc.)
+2. Wait up to 5 seconds for the page to fully load
+3. Take a screenshot and describe the UI in detail
+4. Look for location markers on the map (Wardha, Nagpur, Hinganghat, Beltarodi, Amravati)
+5. Click the "Wardha" marker on the map — describe what happens
+6. If a panel appears, take a screenshot and describe it
+7. Click "View audit history" (or the location panel button) — describe what happens
+8. Describe the location page (does it show visit cards?)
+9. Click the first visit card — describe the gallery page
+10. Click on a photo in the gallery — describe the photo viewer
+11. Press Escape or X to close the viewer
+12. Navigate back to the map (click Map or back button)
+13. Click "Add Images" in the nav bar — describe the modal
+14. Close the modal
+15. Report any JavaScript console errors you saw throughout
+
+Return a detailed report of what worked, what didn't, and any errors.
